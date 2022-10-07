@@ -1,3 +1,7 @@
-<app-header></app-header>
-
+<app-header
+  (searchEvent)="addSearchEvent($event)"
+  (orderEvent)="addSortEvent($event)"></app-header>
 <router-outlet></router-outlet>
+<app-search-results
+  [searchInput]="search"
+  [sortEvent]="sortProperty"></app-search-results>

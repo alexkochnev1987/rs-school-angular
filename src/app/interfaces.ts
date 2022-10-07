@@ -35,7 +35,7 @@ export interface Snippet {
     description: string;
   };
   defaultAudioLanguage: string;
-  statistics: Statistics;
+  defaultLanguage?: string;
 }
 
 export interface Item {
@@ -43,6 +43,7 @@ export interface Item {
   etag: string;
   id: string;
   snippet: Snippet;
+  statistics: Statistics;
 }
 
 export interface YoutubeResponse {
@@ -53,4 +54,19 @@ export interface YoutubeResponse {
     resultsPerPage: number;
   };
   items: Item[];
+}
+
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
+
+export enum SortKey {
+  date = 'date',
+  view = 'view',
+}
+
+export interface SortEvent {
+  order: SortOrder;
+  key?: SortKey;
 }

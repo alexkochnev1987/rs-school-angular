@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SortEvent } from './interfaces';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'rs-school';
+  search = '';
+  sortProperty!: SortEvent;
+  addSearchEvent($event: string) {
+    this.search = $event;
+  }
+
+  addSortEvent($event: SortEvent) {
+    this.sortProperty = $event;
+  }
 }

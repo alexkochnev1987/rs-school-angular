@@ -1,1 +1,9 @@
-<p>search-results works!</p>
+<div *ngFor="let item of items$ | async | sortItem: sortEvent">
+  <div
+    *ngIf="
+      searchInput === '' ||
+      item.snippet.title.toLocaleLowerCase().includes(searchInput.toLowerCase())
+    ">
+    <app-search-item [item]="item"></app-search-item>
+  </div>
+</div>
