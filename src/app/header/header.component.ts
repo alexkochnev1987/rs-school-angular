@@ -13,6 +13,7 @@ import { SortEvent, SortKey, SortOrder } from '../interfaces';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  show = false;
   search = '';
   SortOrder = SortOrder;
   SortKey = SortKey;
@@ -28,7 +29,6 @@ export class HeaderComponent {
 
   emitOrderEvent(order: SortOrder, key: SortKey | undefined) {
     const obj: SortEvent = { order: order, key: key };
-    console.log(obj);
     this.orderEvent.emit(obj);
   }
 }

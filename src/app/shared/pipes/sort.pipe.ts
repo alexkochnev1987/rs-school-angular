@@ -27,9 +27,6 @@ export class SortPipe implements PipeTransform {
           ? 1
           : -1
       );
-      sortArray.forEach(e =>
-        console.log(typeof new Date(e.snippet.publishedAt).getTime())
-      );
     }
 
     return sortEvent.order === SortOrder.asc ? sortArray : sortArray.reverse();
