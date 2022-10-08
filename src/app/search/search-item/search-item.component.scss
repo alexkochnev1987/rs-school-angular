@@ -1,7 +1,11 @@
 .example-card {
   max-width: 400px;
   border-bottom: 10px solid;
+  height: 450px;
+}
 
+.desc {
+  overflow: auto;
 }
 
 .red {
