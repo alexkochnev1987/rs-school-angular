@@ -10,7 +10,7 @@ export class LoginComponent {
   constructor(private authService: AuthService) {}
 
   logIn() {
-    this.authService.login().subscribe(x => console.log(x));
+    this.authService.login().subscribe();
   }
 
   logOut() {

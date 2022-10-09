@@ -22,7 +22,6 @@ export class DetailedInfoComponent implements OnInit {
     this.searchItemService.getItems().subscribe(x => {
       this.item = x.find(elem => elem.id === id);
     });
-    console.log(this.item);
   }
 
   goBack(): void {
