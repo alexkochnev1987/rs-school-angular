@@ -4,11 +4,11 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { SearchItemComponent } from './search-item/search-item.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { SortPipe } from '../shared/pipes/sort.pipe';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
-  declarations: [SearchResultsComponent, SearchItemComponent, SortPipe],
-  imports: [CommonModule, MatCardModule, MatIconModule],
+  declarations: [SearchResultsComponent, SearchItemComponent],
+  imports: [CommonModule, MatCardModule, MatIconModule, SharedModule],
   exports: [SearchItemComponent, SearchResultsComponent],
 })
 export class SearchModule {}

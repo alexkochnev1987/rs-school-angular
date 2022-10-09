@@ -15,9 +15,6 @@ export class SearchItemService {
   getItems(): Observable<Item[]> {
     return of(response).pipe(map(x => x.items));
   }
-  // setSearch(value: string) {
-  //   this.searchValue = value;
-  // }
 
   searchItem(value: string): Observable<Item[]> {
     if (!this.searchValue.trim()) return of([]);

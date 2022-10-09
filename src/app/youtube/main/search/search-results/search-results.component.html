@@ -1,11 +1,11 @@
 <div class="d-flex flex-wrap justify-content-center">
-  <div *ngFor="let item of items$ | async | sortItem: sortEvent">
+  <div *ngFor="let item of items$ | async | sortItem: sortEventStreamed">
     <div
       *ngIf="
-        searchInput !== '' &&
+        inputStreamed === '' ||
         item.snippet.title
           .toLocaleLowerCase()
-          .includes(searchInput.toLowerCase())
+          .includes(inputStreamed.toLowerCase())
       ">
       <app-search-item [item]="item"></app-search-item>
     </div>

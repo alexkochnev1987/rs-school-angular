@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { map, Observable, pipe } from 'rxjs';
 import { Item, SortEvent, SortKey, SortOrder } from 'src/app/interfaces';
+import { HeaderSortService } from 'src/app/services/header-sort.service';
 import { SearchItemService } from 'src/app/services/search-item.service';
 
 @Component({
@@ -9,16 +10,19 @@ import { SearchItemService } from 'src/app/services/search-item.service';
   styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent implements OnInit {
-  @Input() searchInput = '';
   items$!: Observable<Item[]>;
-  @Input() sortEvent?: SortEvent;
-  @Input() SortKey: SortKey | undefined;
-  constructor(private searchItem: SearchItemService) {}
+  inputStreamed = '';
+  sortEventStreamed?: SortEvent;
+
+  constructor(
+    private searchItem: SearchItemService,
+    private headerSortService: HeaderSortService
+  ) {}
   ngOnInit(): void {
     this.items$ = this.searchItem.getItems();
-  }
-
-  log() {
-    console.log(this.searchInput);
+    this.headerSortService.getInput().subscribe(x => (this.inputStreamed = x));
+    this.headerSortService
+      .getSort()
+      .subscribe(x => (this.sortEventStreamed = x));
   }
 }
