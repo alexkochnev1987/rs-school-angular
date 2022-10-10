@@ -7,24 +7,13 @@ import { response } from './response.mock';
   providedIn: 'root',
 })
 export class SearchItemService {
-  items: Item[] = [];
-  searchValue = '';
-
   constructor() {}
 
   getItems(): Observable<Item[]> {
     return of(response).pipe(map(x => x.items));
   }
 
-  searchItem(value: string): Observable<Item[]> {
-    if (!this.searchValue.trim()) return of([]);
-    return of(response).pipe(
-      map(
-        x =>
-          (this.items = x.items.filter(x =>
-            x.snippet.title.includes(value.toLowerCase())
-          ))
-      )
-    );
+  searchItem(value: string) {
+    return this.getItems().pipe(map(x => x.find(elem => elem.id === value)));
   }
 }
