@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+  isLoading = false;
   login = new FormGroup({
     userName: new FormControl('', [Validators.required, Validators.min(3)]),
     password: new FormControl('', Validators.required),
@@ -26,9 +27,11 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    this.isLoading = true;
     this.logIn().subscribe(x => {
       localStorage.setItem('token', JSON.stringify(x));
       this.router.navigate(['main']);
+      this.isLoading = false;
     });
   }
 }

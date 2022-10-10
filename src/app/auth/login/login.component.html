@@ -19,10 +19,24 @@
         id="inputPassword"
         placeholder="Password" />
     </div>
-    <button class="btn btn-primary" type="submit" [disabled]="!login.valid">
-      Submit
+    <button
+      class="btn btn-primary"
+      type="submit"
+      [disabled]="!login.valid || isLoading">
+      <div class="d-flex">
+        <mat-spinner
+          class="m-0 p-0"
+          diameter="20"
+          color="primary"
+          *ngIf="isLoading"></mat-spinner>
+        <p class="m-0 p-0 pl-2">Submit</p>
+      </div>
     </button>
-    <button class="btn btn-danger" type="button" (click)="logOut()">
+    <button
+      class="btn btn-danger"
+      type="button"
+      (click)="logOut()"
+      [disabled]="isLoading">
       Logout
     </button>
   </form>
