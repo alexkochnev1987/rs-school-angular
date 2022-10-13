@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
-import { map, Subject } from 'rxjs';
-import { SortEvent } from '../interfaces';
+import { map, Observable, of, Subject } from 'rxjs';
+import { SortEvent, SortOrder } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeaderSortService {
-  private input = new Subject<string>();
-  private sort = new Subject<SortEvent>();
-
-  inputStream$ = this.input.asObservable();
-  sortStream$ = this.sort.asObservable();
+  inputStream$: Observable<string> = of('');
+  sortStream$: Observable<SortEvent> = of({ order: SortOrder.asc });
 
   getInput() {
-    return this.input.pipe(map(x => x));
+    return this.inputStream$;
   }
 
   getSort() {
-    return this.sort.pipe(map(x => x));
+    return this.sortStream$;
   }
 
-  streamInput(value: string) {
-    this.input.next(value);
+  streamInput(value: Observable<string>) {
+    this.inputStream$ = value;
   }
 
-  streamSort(value: SortEvent) {
-    this.sort.next(value);
+  streamSort(value: Observable<SortEvent>) {
+    this.sortStream$ = value;
   }
 }

@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import { filter, map, Observable, of } from 'rxjs';
-import { Item } from '../interfaces';
-import { response } from './response.mock';
+import { map, Observable } from 'rxjs';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchItemService {
-  constructor() {}
+  constructor(private httpService: HttpService) {}
 
-  getItems(): Observable<Item[]> {
-    return of(response).pipe(map(x => x.items));
+  getSearchItems(searchInput: string): Observable<string[]> {
+    return this.httpService
+      .getData(searchInput)
+      .pipe(map(x => x.items.map(x => x.id.videoId)));
   }
 
-  searchItem(value: string) {
-    return this.getItems().pipe(map(x => x.find(elem => elem.id === value)));
+  getVideoItems(id: string[]) {
+    return this.httpService.getItemById(id.join(',')).pipe(map(x => x.items));
+  }
+
+  getVideoItem(id: string) {
+    return this.httpService.getItemById(id).pipe(map(x => x.items[0]));
   }
 }

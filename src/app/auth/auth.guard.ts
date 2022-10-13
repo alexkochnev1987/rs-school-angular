@@ -7,6 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { RouterStateValue } from '../constants';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -23,7 +24,6 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     const url: string = state.url;
-
     return this.checkLogin(url);
   }
   checkLogin(url: string): true | UrlTree {
@@ -31,7 +31,6 @@ export class AuthGuard implements CanActivate {
       return true;
     }
     this.authService.redirectUrl = url;
-    console.log(url);
-    return this.router.parseUrl('/login');
+    return this.router.parseUrl(RouterStateValue.login);
   }
 }

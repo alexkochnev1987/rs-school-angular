@@ -30,15 +30,14 @@
       </a>
     </div>
     <div class="d-flex">
-      <input
-        type="search"
-        class="form-control me-2"
-        [(ngModel)]="search"
-        placeholder="Search"
-        autofocus />
-      <button class="btn btn-primary" (click)="emitSearchEvent(search)">
-        Search
-      </button>
+      <form [formGroup]="searchForm">
+        <input
+          type="search"
+          class="form-control me-2"
+          formControlName="search"
+          placeholder="Search"
+          autofocus />
+      </form>
       <button
         (click)="show = !show"
         class="d-flex align-items-center btn btn-primary p-1">
@@ -47,7 +46,9 @@
     </div>
 
     <div class="navbar-text">
-      <div class="d-flex justify-content-between">
+      <div
+        class="d-flex justify-content-between"
+        *ngIf="(loginStatus$ | async) === false">
         <p>Login info</p>
         <a [routerLink]="['/login']">
           <svg
@@ -64,29 +65,32 @@
           </svg>
         </a>
       </div>
+      <div *ngIf="loginStatus$ | async">
+        <button
+          class="d-flex align-items-center btn btn-primary p-1"
+          [routerLink]="['/login']"
+          (click)="logOut()">
+          Logout
+        </button>
+      </div>
     </div>
   </div>
 </nav>
-<div class="container-fluid">
-  <div *ngIf="show" class="d-flex justify-content-center">
-    <mat-radio-group [(ngModel)]="order" class="d-flex align-items-center">
-      <mat-radio-button class="px-2" [value]="SortOrder.asc" selected>
-        ASC
-      </mat-radio-button>
-      <mat-radio-button class="px-2" [value]="SortOrder.desc">
-        DESC
-      </mat-radio-button>
-    </mat-radio-group>
-    <mat-radio-group [(ngModel)]="key" class="d-flex align-items-center">
-      <mat-radio-button class="px-2" [value]="SortKey.date">
-        Date
-      </mat-radio-button>
-      <mat-radio-button class="px-2" [value]="SortKey.view">
-        View
-      </mat-radio-button>
-    </mat-radio-group>
-    <button (click)="emitOrderEvent(order, key)" class="btn btn-primary">
-      Sort
-    </button>
-  </div>
+<div *ngIf="show" class="d-flex justify-content-center" [formGroup]="sortForm">
+  <mat-radio-group formControlName="order" class="d-flex align-items-center">
+    <mat-radio-button class="px-2" [value]="SortOrder.asc" selected>
+      ASC
+    </mat-radio-button>
+    <mat-radio-button class="px-2" [value]="SortOrder.desc">
+      DESC
+    </mat-radio-button>
+  </mat-radio-group>
+  <mat-radio-group formControlName="key" class="d-flex align-items-center">
+    <mat-radio-button class="px-2" [value]="SortKey.date">
+      Date
+    </mat-radio-button>
+    <mat-radio-button class="px-2" [value]="SortKey.view">
+      View
+    </mat-radio-button>
+  </mat-radio-group>
 </div>

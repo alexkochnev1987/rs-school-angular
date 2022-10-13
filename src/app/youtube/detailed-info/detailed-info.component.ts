@@ -21,8 +21,17 @@ export class DetailedInfoComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.item$ = this.searchItemService.searchItem(id);
+      this.item$ = this.searchItemService.getVideoItem(id);
     }
+  }
+
+  getImageURL(item: Item) {
+    const thumbnail = item.snippet.thumbnails;
+    if (thumbnail.maxres?.url) return thumbnail.maxres.url;
+    if (thumbnail.high?.url) return thumbnail.high.url;
+    if (thumbnail.medium?.url) return thumbnail.medium.url;
+    if (thumbnail.standard?.url) return thumbnail.standard.url;
+    return thumbnail.default.url;
   }
 
   goBack(): void {

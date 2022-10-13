@@ -1,5 +1,16 @@
+import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { map, Observable, pipe } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  pipe,
+  Subject,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { Item, SortEvent, SortKey, SortOrder } from 'src/app/interfaces';
 import { HeaderSortService } from 'src/app/services/header-sort.service';
 import { SearchItemService } from 'src/app/services/search-item.service';
@@ -9,20 +20,36 @@ import { SearchItemService } from 'src/app/services/search-item.service';
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
 })
-export class SearchResultsComponent implements OnInit {
+export class SearchResultsComponent implements OnInit, OnDestroy {
+  notifier$ = new Subject();
   items$!: Observable<Item[]>;
-  inputStreamed = '';
   sortEventStreamed?: SortEvent;
 
   constructor(
-    private searchItem: SearchItemService,
+    private searchItemService: SearchItemService,
     private headerSortService: HeaderSortService
   ) {}
   ngOnInit(): void {
-    this.items$ = this.searchItem.getItems();
-    this.headerSortService.getInput().subscribe(x => (this.inputStreamed = x));
     this.headerSortService
       .getSort()
+      .pipe(takeUntil(this.notifier$))
       .subscribe(x => (this.sortEventStreamed = x));
+    this.headerSortService
+      .getInput()
+      .pipe(
+        debounceTime(450),
+        distinctUntilChanged(),
+        filter(x => x.length > 2),
+        switchMap(x => this.searchItemService.getSearchItems(x)),
+        takeUntil(this.notifier$)
+      )
+      .subscribe(x => {
+        this.items$ = this.searchItemService.getVideoItems(x);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.notifier$.next(1);
+    this.notifier$.complete();
   }
 }

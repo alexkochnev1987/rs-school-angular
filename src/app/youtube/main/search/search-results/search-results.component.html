@@ -1,13 +1,5 @@
 <div class="d-flex flex-wrap justify-content-center">
   <div *ngFor="let item of items$ | async | sortItem: sortEventStreamed">
-    <div
-      *ngIf="
-        inputStreamed === '' ||
-        item.snippet.title
-          .toLocaleLowerCase()
-          .includes(inputStreamed.toLowerCase())
-      ">
-      <app-search-item [item]="item"></app-search-item>
-    </div>
+    <app-search-item [item]="item"></app-search-item>
   </div>
 </div>

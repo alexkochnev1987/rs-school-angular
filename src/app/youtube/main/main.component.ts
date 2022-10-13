@@ -8,13 +8,4 @@ import { SortEvent } from 'src/app/interfaces';
 })
 export class MainComponent {
   constructor() {}
-  search = '';
-  sortProperty!: SortEvent;
-  addSearchEvent($event: string) {
-    this.search = $event;
-  }
-
-  addSortEvent($event: SortEvent) {
-    this.sortProperty = $event;
-  }
 }

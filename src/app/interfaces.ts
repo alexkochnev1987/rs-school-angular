@@ -46,6 +46,14 @@ export interface Item {
   statistics: Statistics;
 }
 
+export interface SearchItem {
+  kind: string;
+  etag: string;
+  id: { kind: string; videoId: string };
+  snippet: Snippet;
+  statistics: Statistics;
+}
+
 export interface YoutubeResponse {
   kind: string;
   etag: string;
@@ -69,4 +77,11 @@ export enum SortKey {
 export interface SortEvent {
   order: SortOrder;
   key?: SortKey;
+}
+
+export interface SearchDetails {
+  etag: string;
+  items: SearchItem[];
+  kind: string;
+  pageInfo: { totalResults: number; resultsPerPage: number };
 }

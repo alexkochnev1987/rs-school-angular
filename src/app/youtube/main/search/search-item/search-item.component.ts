@@ -1,6 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AgeCategory, Color, MS_IN_DAY } from 'src/app/constatnts';
-import { Item } from 'src/app/interfaces';
+import {
+  Component,
+  Input,
+  OnInit,
+  ɵinternalCreateApplication,
+} from '@angular/core';
+import { Observable } from 'rxjs';
+import {
+  AgeCategory,
+  Color,
+  MS_IN_DAY,
+  RouterStateValue,
+} from 'src/app/constants';
+import { Item, Statistics } from 'src/app/interfaces';
+import { SearchItemService } from 'src/app/services/search-item.service';
 
 @Component({
   selector: 'app-search-item',
@@ -8,8 +20,10 @@ import { Item } from 'src/app/interfaces';
   styleUrls: ['./search-item.component.scss'],
 })
 export class SearchItemComponent implements OnInit {
+  RouterStateValue = RouterStateValue;
   age = 0;
   @Input() item!: Item;
+  statistics$?: Observable<Item>;
   showDescription = false;
   constructor() {}
   ngOnInit(): void {
@@ -18,8 +32,14 @@ export class SearchItemComponent implements OnInit {
         MS_IN_DAY
     );
   }
-  switchDescription() {
-    this.showDescription = !this.showDescription;
+
+  getImageURL() {
+    const thumbnail = this.item.snippet.thumbnails;
+    if (thumbnail.maxres?.url) return thumbnail.maxres.url;
+    if (thumbnail.high?.url) return thumbnail.high.url;
+    if (thumbnail.medium?.url) return thumbnail.medium.url;
+    if (thumbnail.standard?.url) return thumbnail.standard.url;
+    return thumbnail.default.url;
   }
 
   getColorBorder() {
