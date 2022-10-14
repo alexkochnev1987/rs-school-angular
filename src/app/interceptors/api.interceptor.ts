@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BASE_URL } from './constants';
+import { API_KEY, BASE_URL } from '../constants';
 
 @Injectable()
 export class APIInterceptor implements HttpInterceptor {
@@ -16,7 +16,9 @@ export class APIInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    const apiReq = request.clone({ url: `${BASE_URL}/${request.url}` });
+    const apiReq = request.clone({
+      url: `${BASE_URL}/${request.url}${API_KEY}`,
+    });
     return next.handle(apiReq);
   }
 }

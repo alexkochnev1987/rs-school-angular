@@ -1,15 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { filter, map } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { map } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HeaderSortService } from 'src/app/services/header-sort.service';
-import { SortEvent, SortKey, SortOrder } from '../../interfaces';
+import { SortKey, SortOrder } from '../../interfaces';
 
 @Component({
   selector: 'app-header',
@@ -40,19 +34,24 @@ export class HeaderComponent implements OnInit {
       this.searchForm.valueChanges.pipe(map(x => (x.search ? x.search : '')))
     );
     this.headerSortService.streamSort(
-      this.sortForm.valueChanges.pipe(
-        map(x => {
-          let order = SortOrder.asc;
-          let key;
-          if (x.key) key = x.key;
-          if (x.order) order = x.order;
-          return { order: order, key: key };
-        })
-      )
+      this.sortForm.valueChanges.pipe(map(this.createSortPipe))
     );
   }
 
   logOut() {
     this.authService.logout();
+  }
+
+  createSortPipe(
+    x: Partial<{
+      order: SortOrder | null;
+      key: SortKey | null;
+    }>
+  ) {
+    let order = SortOrder.asc;
+    let key;
+    if (x.key) key = x.key;
+    if (x.order) order = x.order;
+    return { order: order, key: key };
   }
 }

@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { getImageURL } from 'src/app/constants';
 import { Item } from 'src/app/interfaces';
 import { SearchItemService } from 'src/app/services/search-item.service';
 
@@ -12,6 +13,7 @@ import { SearchItemService } from 'src/app/services/search-item.service';
 })
 export class DetailedInfoComponent implements OnInit {
   item$!: Observable<Item | undefined>;
+  getImageURL = getImageURL;
   constructor(
     private route: ActivatedRoute,
     private searchItemService: SearchItemService,
@@ -23,15 +25,6 @@ export class DetailedInfoComponent implements OnInit {
     if (id) {
       this.item$ = this.searchItemService.getVideoItem(id);
     }
-  }
-
-  getImageURL(item: Item) {
-    const thumbnail = item.snippet.thumbnails;
-    if (thumbnail.maxres?.url) return thumbnail.maxres.url;
-    if (thumbnail.high?.url) return thumbnail.high.url;
-    if (thumbnail.medium?.url) return thumbnail.medium.url;
-    if (thumbnail.standard?.url) return thumbnail.standard.url;
-    return thumbnail.default.url;
   }
 
   goBack(): void {
