@@ -76,7 +76,7 @@ export enum SortKey {
 
 export interface SortEvent {
   order: SortOrder;
-  key?: SortKey;
+  key?: SortKey | null;
 }
 
 export interface SearchDetails {

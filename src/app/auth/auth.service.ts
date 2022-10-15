@@ -7,7 +7,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 })
 export class AuthService {
   isLoggedIn = false;
-  isLoggedIn$ = new Subject();
+  isLoggedIn$ = new Subject<boolean>();
   redirectUrl: string | null = null;
   constructor(private localStorageService: LocalStorageService) {}
 

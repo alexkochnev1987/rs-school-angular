@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, of, Subject } from 'rxjs';
-import { SortEvent, SortOrder } from '../interfaces';
+import { Subject } from 'rxjs';
+import { SortEvent } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeaderSortService {
-  inputStream$: Observable<string> = of('');
-  sortStream$: Observable<SortEvent> = of({ order: SortOrder.asc });
+  inputStream$ = new Subject<string>();
+  sortStream$ = new Subject<SortEvent>();
 
   getInput() {
     return this.inputStream$;
@@ -17,11 +17,11 @@ export class HeaderSortService {
     return this.sortStream$;
   }
 
-  streamInput(value: Observable<string>) {
-    this.inputStream$ = value;
+  streamInput(value: string | null | undefined) {
+    if (value) this.inputStream$.next(value.trim());
   }
 
-  streamSort(value: Observable<SortEvent>) {
-    this.sortStream$ = value;
+  streamSort(value: SortEvent) {
+    this.sortStream$.next(value);
   }
 }

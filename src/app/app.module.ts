@@ -10,6 +10,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { APIInterceptor } from './interceptors/api.interceptor';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { ErrorHandlersService } from './services/error-handlers.service';
+import { AdminModule } from './auth/admin/admin.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { ErrorHandlersService } from './services/error-handlers.service';
     CoreModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    AdminModule,
   ],
   providers: [
     {

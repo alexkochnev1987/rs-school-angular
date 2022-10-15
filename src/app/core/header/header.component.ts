@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map } from 'rxjs';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HeaderSortService } from 'src/app/services/header-sort.service';
 import { SortKey, SortOrder } from '../../interfaces';
@@ -10,7 +10,7 @@ import { SortKey, SortOrder } from '../../interfaces';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   searchForm = new FormGroup({
     search: new FormControl(''),
   });
@@ -21,21 +21,25 @@ export class HeaderComponent implements OnInit {
   show = false;
   SortOrder = SortOrder;
   SortKey = SortKey;
-  order = SortOrder.asc;
-  key?: SortKey;
-  loginStatus$ = this.authService.getLoginStatus();
+  loginStatus$!: Observable<boolean>;
+  unsubscribe$ = new Subject();
   constructor(
     private headerSortService: HeaderSortService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.headerSortService.streamInput(
-      this.searchForm.valueChanges.pipe(map(x => (x.search ? x.search : '')))
-    );
-    this.headerSortService.streamSort(
-      this.sortForm.valueChanges.pipe(map(this.createSortPipe))
-    );
+    this.loginStatus$ = this.authService.getLoginStatus();
+    this.searchForm.valueChanges
+      .pipe(
+        map(x => x.search),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(x => this.headerSortService.streamInput(x));
+
+    this.sortForm.valueChanges
+      .pipe(map(this.createSortPipe), takeUntil(this.unsubscribe$))
+      .subscribe(x => this.headerSortService.streamSort(x));
   }
 
   logOut() {
@@ -48,10 +52,11 @@ export class HeaderComponent implements OnInit {
       key: SortKey | null;
     }>
   ) {
-    let order = SortOrder.asc;
-    let key;
-    if (x.key) key = x.key;
-    if (x.order) order = x.order;
-    return { order: order, key: key };
+    return { order: x.order ?? SortOrder.asc, key: x.key };
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(1);
+    this.unsubscribe$.complete();
   }
 }

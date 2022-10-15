@@ -16,10 +16,8 @@ import { Item } from 'src/app/interfaces';
 })
 export class SearchItemComponent implements OnInit {
   RouterStateValue = RouterStateValue;
-  age = 0;
+  private age = 0;
   @Input() item!: Item;
-  statistics$?: Observable<Item>;
-  showDescription = false;
   getImageURL = getImageURL;
 
   constructor() {}
