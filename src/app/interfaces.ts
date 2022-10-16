@@ -85,3 +85,7 @@ export interface SearchDetails {
   kind: string;
   pageInfo: { totalResults: number; resultsPerPage: number };
 }
+
+export interface SpinnerServiceState {
+  [key: string]: boolean;
+}

@@ -41,3 +41,7 @@ export function getImageURL(item: Item) {
   if (thumbnail.standard?.url) return thumbnail.standard.url;
   return thumbnail.default.url;
 }
+
+export enum SpinnerStateName {
+  login = 'login',
+}

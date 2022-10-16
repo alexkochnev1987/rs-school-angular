@@ -4,8 +4,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { RouterStateValue } from 'src/app/constants';
-import { HttpService } from 'src/app/services/http.service';
+import { RouterStateValue, SpinnerStateName } from 'src/app/constants';
+import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class LoginComponent implements OnDestroy {
   notifier$ = new Subject();
-  isLoading = false;
+  isLoading$ = this.spinnerService.getLoading(SpinnerStateName.login);
   login = new FormGroup({
     userName: new FormControl('', [Validators.required, Validators.min(3)]),
     password: new FormControl('', Validators.required),
@@ -22,7 +22,7 @@ export class LoginComponent implements OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private httpService: HttpService
+    private spinnerService: SpinnerService
   ) {}
   logIn() {
     return this.authService.login();
@@ -34,12 +34,12 @@ export class LoginComponent implements OnDestroy {
   }
 
   onSubmit() {
-    this.isLoading = true;
+    this.spinnerService.requestStarted(SpinnerStateName.login);
     this.logIn()
       .pipe(takeUntil(this.notifier$))
       .subscribe(x => {
         this.router.navigate([RouterStateValue.main]);
-        this.isLoading = false;
+        this.spinnerService.requestEnded(SpinnerStateName.login);
       });
   }
 
