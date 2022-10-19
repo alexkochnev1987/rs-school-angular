@@ -45,3 +45,15 @@ export function getImageURL(item: Item) {
 export enum SpinnerStateName {
   login = 'login',
 }
+
+export enum PasswordValidatorSymbols {
+  upperCase = 'uppercase',
+  lowerCase = 'lowercase',
+  numbers = 'numbers',
+  special = 'special',
+  minLength = 'minlength',
+  symbol = '*@!#%&()^~{}',
+}
+
+export const urlPattern =
+  '(?:https?)://(w+:?w*)?(S+)(:d+)?(/|/([w#!:.?+=&%!-/]))?';

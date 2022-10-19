@@ -9,6 +9,10 @@
         id="inputName"
         formControlName="userName"
         placeholder="Enter user name" />
+      <p *ngIf="_user?.hasError('required') && _user?.dirty">
+        Please enter a login email.
+      </p>
+      <p *ngIf="_user?.hasError('email')">The login email is invalid.</p>
     </div>
     <div class="form-group">
       <label for="inputPassword" class="text-muted">Password</label>
@@ -18,6 +22,24 @@
         class="form-control"
         id="inputPassword"
         placeholder="Password" />
+      <div *ngIf="_password?.dirty && _password?.invalid" class="error">
+        <h3 class="m-0">Your password isn't strong enough.</h3>
+        <p *ngIf="_password?.errors?.[PasswordValidatorSymbols.minLength]">
+          Add at least 8 characters.
+        </p>
+        <p *ngIf="_password?.errors?.[PasswordValidatorSymbols.upperCase]">
+          Add letter in uppercase.
+        </p>
+        <p *ngIf="_password?.errors?.[PasswordValidatorSymbols.lowerCase]">
+          Add letter in lowercase.
+        </p>
+        <p *ngIf="_password?.errors?.[PasswordValidatorSymbols.numbers]">
+          Add letter number.
+        </p>
+        <p *ngIf="_password?.errors?.[PasswordValidatorSymbols.special]">
+          Add letter special symbol ({{ PasswordValidatorSymbols.symbol }})
+        </p>
+      </div>
     </div>
     <button
       class="btn btn-primary"
