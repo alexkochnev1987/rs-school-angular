@@ -34,10 +34,10 @@
           Add letter in lowercase.
         </p>
         <p *ngIf="_password?.errors?.[PasswordValidatorSymbols.numbers]">
-          Add letter number.
+          Add number.
         </p>
         <p *ngIf="_password?.errors?.[PasswordValidatorSymbols.special]">
-          Add letter special symbol ({{ PasswordValidatorSymbols.symbol }})
+          Add special symbol ({{ PasswordValidatorSymbols.symbol }})
         </p>
       </div>
     </div>

@@ -1,5 +1,13 @@
 <nav class="navbar navbar-expand bg-light">
   <div class="container">
+    <a [routerLink]="['/admin']"
+      ><button
+        type="button"
+        *ngIf="loginStatus$ | async"
+        class="btn btn-primary p-1">
+        Admin
+      </button></a
+    >
     <div class="navbar-brand">
       <a [routerLink]="['/main']">
         <svg

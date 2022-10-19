@@ -6,9 +6,10 @@ import { RouterStateValue } from './constants';
 const routes: Routes = [
   { path: '', redirectTo: RouterStateValue.login, pathMatch: 'full' },
   {
-    path: '**',
+    path: 'admin',
     loadChildren: () =>
       import('./auth/admin/admin.module').then(m => m.AdminModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'main',
