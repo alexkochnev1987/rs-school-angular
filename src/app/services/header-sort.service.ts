@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject, tap } from 'rxjs';
 import { SortEvent } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeaderSortService {
-  inputStream$ = new Subject<string>();
+  inputStream$ = new BehaviorSubject<string>('');
   sortStream$ = new Subject<SortEvent>();
 
   getInput() {

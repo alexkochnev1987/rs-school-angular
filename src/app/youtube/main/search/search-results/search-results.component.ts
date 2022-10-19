@@ -34,7 +34,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this.headerSortService
       .getInput()
       .pipe(
-        debounceTime(450),
+        debounceTime(200),
         distinctUntilChanged(),
         filter(x => x.length > 2),
         switchMap(x => this.searchItemService.getSearchItems(x)),
