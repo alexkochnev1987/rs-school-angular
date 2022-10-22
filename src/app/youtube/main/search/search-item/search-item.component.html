@@ -1,4 +1,7 @@
-<mat-card [class]="['example-card', getColorBorder()]">
+<mat-card
+  [class]="['example-card']"
+  appColoringBorder
+  [color]="getColor(item.snippet.publishedAt)">
   <div class="d-flex flex-column justify-content-start h-100">
     <div class="h-50">
       <img

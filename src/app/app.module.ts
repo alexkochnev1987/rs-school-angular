@@ -11,6 +11,13 @@ import { APIInterceptor } from './interceptors/api.interceptor';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { ErrorHandlersService } from './services/error-handlers.service';
 import { AdminModule } from './auth/admin/admin.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { cardStore } from './redux/reducers/card.reducer';
+import { CardEffect } from './redux/effects/card.effect';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +30,13 @@ import { AdminModule } from './auth/admin/admin.module';
     ReactiveFormsModule,
     AppRoutingModule,
     AdminModule,
+    EffectsModule.forRoot([CardEffect]),
+    StoreModule.forRoot({ card: cardStore }, {}),
+    StoreRouterConnectingModule.forRoot(),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [
     {

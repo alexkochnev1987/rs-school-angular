@@ -1,8 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { HeaderSortService } from 'src/app/services/header-sort.service';
+import {
+  changeSearchStream,
+  changeSortStream,
+} from 'src/app/redux/actions/cards.actions';
+import { selectLoginStatus } from 'src/app/redux/selectors/card.selector';
 import { SortKey, SortOrder } from '../../interfaces';
 
 @Component({
@@ -21,25 +32,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
   show = false;
   SortOrder = SortOrder;
   SortKey = SortKey;
-  loginStatus$!: Observable<boolean>;
+  loginStatus$ = this.store.select(selectLoginStatus);
   unsubscribe$ = new Subject();
-  constructor(
-    private headerSortService: HeaderSortService,
-    private authService: AuthService
-  ) {}
+  constructor(private authService: AuthService, private store: Store) {}
 
   ngOnInit(): void {
-    this.loginStatus$ = this.authService.getLoginStatus();
     this.searchForm.valueChanges
       .pipe(
-        map(x => x.search),
+        debounceTime(200),
+        distinctUntilChanged(),
+        map(x => (x.search ? x.search : '')),
         takeUntil(this.unsubscribe$)
       )
-      .subscribe(x => this.headerSortService.streamInput(x));
+      .subscribe(x => {
+        this.store.dispatch(changeSearchStream({ input: x }));
+      });
 
     this.sortForm.valueChanges
       .pipe(map(this.createSortPipe), takeUntil(this.unsubscribe$))
-      .subscribe(x => this.headerSortService.streamSort(x));
+      .subscribe(x => {
+        this.store.dispatch(changeSortStream({ input: x }));
+      });
   }
 
   logOut() {

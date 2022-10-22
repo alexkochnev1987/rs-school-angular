@@ -7,6 +7,12 @@ export enum Color {
   Blue = 'blue',
 }
 
+export enum ClassButton {
+  red = 'danger',
+  yellow = 'warning',
+  green = 'success',
+  blue = 'primary',
+}
 export enum AgeCategory {
   young = 7,
   middle = 30,
@@ -26,10 +32,12 @@ const secondsInHour = 3600;
 const hoursPerDay = 24;
 export const MS_IN_DAY = millisecondsInSecond * secondsInHour * hoursPerDay;
 export const BASE_URL = 'https://www.googleapis.com/youtube/v3';
-
-export const API_KEY = '&key=AIzaSyA97B5VEERhz4GEOFzztkbam9vWF8ZFjTQ';
+const SECOND_KEY = 'AIzaSyA39vER2D9Sp6O3ig1YrTLtkBTmsGWhw0k';
+const FIRST_KEY = 'AIzaSyCChvDOjQZk-4dKlEWeNDybUdncBU81ZQI';
+export const API_KEY = `&key=${SECOND_KEY}`;
 
 export const SEARCH = `search?type=video&part=snippet&&statistics&maxResults=15&order=viewCount&q=`;
+
 export const VIDEO = `videos?id=`;
 export const VIDEO_QUERY = '&part=snippet,statistics';
 
@@ -40,6 +48,16 @@ export function getImageURL(item: Item) {
   if (thumbnail.medium?.url) return thumbnail.medium.url;
   if (thumbnail.standard?.url) return thumbnail.standard.url;
   return thumbnail.default.url;
+}
+
+export function getColor(date: string) {
+  const getAge = (date: string) =>
+    Math.floor(Math.abs(Date.now() - new Date(date).getTime()) / MS_IN_DAY);
+  const age = getAge(date);
+  if (age < AgeCategory.young) return Color.Blue;
+  if (age < AgeCategory.middle) return Color.Green;
+  if (age < AgeCategory.old) return Color.Yellow;
+  return Color.Red;
 }
 
 export enum SpinnerStateName {

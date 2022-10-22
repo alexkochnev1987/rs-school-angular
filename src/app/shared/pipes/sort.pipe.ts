@@ -10,7 +10,7 @@ export class SortPipe implements PipeTransform {
     sortEvent: SortEvent | undefined
   ): Item[] | null {
     if (!value || !sortEvent) return value;
-    let sortArray = value.sort(
+    let sortArray = [...value].sort(
       sortEvent.key === SortKey.date ? this.sortDate : this.sortViewCount
     );
     return sortEvent.order === SortOrder.asc ? sortArray : sortArray.reverse();

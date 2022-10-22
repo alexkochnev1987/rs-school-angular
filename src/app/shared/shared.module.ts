@@ -7,8 +7,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { AppRoutingModule } from '../app-routing.module';
 import { RouterModule } from '@angular/router';
+import { ColoringBorderDirective } from './directives/coloring-border.directive';
+import { ColoringButtonDirective } from './directives/coloring-button.directive';
 
 const Material = [
   MatToolbarModule,
@@ -19,8 +20,16 @@ const Material = [
 ];
 
 @NgModule({
-  declarations: [SortPipe],
+  declarations: [SortPipe, ColoringBorderDirective, ColoringButtonDirective],
   imports: [CommonModule, FormsModule, RouterModule, Material],
-  exports: [SortPipe, FormsModule, RouterModule, Material],
+  exports: [
+    SortPipe,
+    FormsModule,
+    RouterModule,
+    ColoringBorderDirective,
+    ColoringButtonDirective,
+    Material,
+    CommonModule,
+  ],
 })
 export class SharedModule {}

@@ -1,35 +1,31 @@
 import { Injectable } from '@angular/core';
-import { delay, Observable, of, Subject, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { delay, Observable, of, tap } from 'rxjs';
+import { changeLoginStatus } from '../redux/actions/cards.actions';
 import { LocalStorageService } from '../services/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  isLoggedIn = false;
-  isLoggedIn$ = new Subject<boolean>();
-  redirectUrl: string | null = null;
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(
+    private localStorageService: LocalStorageService,
+    private store: Store
+  ) {}
 
   login(): Observable<boolean> {
     return of(true).pipe(
       delay(1000),
       tap(() => {
-        this.isLoggedIn = true;
-        this.isLoggedIn$.next(true);
+        this.store.dispatch(changeLoginStatus({ status: true }));
         this.localStorageService.setToken('token');
       })
     );
   }
 
   logout(): void {
-    this.isLoggedIn = false;
-    this.isLoggedIn$.next(false);
+    this.store.dispatch(changeLoginStatus({ status: false }));
     this.localStorageService.clear();
-  }
-
-  getLoginStatus() {
-    return this.isLoggedIn$.asObservable();
   }
 
   getToken() {

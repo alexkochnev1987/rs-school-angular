@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { getImageURL } from 'src/app/constants';
+import { getColor, getImageURL } from 'src/app/constants';
 import { Item } from 'src/app/interfaces';
 import { SearchItemService } from 'src/app/services/search-item.service';
 
@@ -14,6 +14,7 @@ import { SearchItemService } from 'src/app/services/search-item.service';
 export class DetailedInfoComponent implements OnInit {
   item$!: Observable<Item | undefined>;
   getImageURL = getImageURL;
+  getColor = getColor;
   constructor(
     private route: ActivatedRoute,
     private searchItemService: SearchItemService,

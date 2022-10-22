@@ -1,12 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import {
-  AgeCategory,
-  Color,
-  MS_IN_DAY,
-  RouterStateValue,
-  getImageURL,
-} from 'src/app/constants';
+import { RouterStateValue, getImageURL, getColor } from 'src/app/constants';
 import { Item } from 'src/app/interfaces';
 
 @Component({
@@ -14,25 +7,11 @@ import { Item } from 'src/app/interfaces';
   templateUrl: './search-item.component.html',
   styleUrls: ['./search-item.component.scss'],
 })
-export class SearchItemComponent implements OnInit {
+export class SearchItemComponent {
   RouterStateValue = RouterStateValue;
-  private age = 0;
   @Input() item!: Item;
   getImageURL = getImageURL;
+  getColor = getColor;
 
   constructor() {}
-
-  ngOnInit(): void {
-    this.age = Math.floor(
-      Math.abs(Date.now() - new Date(this.item.snippet.publishedAt).getTime()) /
-        MS_IN_DAY
-    );
-  }
-
-  getColorBorder() {
-    if (this.age < AgeCategory.young) return Color.Blue;
-    if (this.age < AgeCategory.middle) return Color.Green;
-    if (this.age < AgeCategory.old) return Color.Yellow;
-    return Color.Red;
-  }
 }

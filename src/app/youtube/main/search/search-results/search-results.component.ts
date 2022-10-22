@@ -1,15 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
+import { SortEvent } from 'src/app/interfaces';
+import { reloadCards } from 'src/app/redux/actions/cards.actions';
 import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  Observable,
-  Subject,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
-import { Item, SortEvent } from 'src/app/interfaces';
-import { HeaderSortService } from 'src/app/services/header-sort.service';
+  selectSearchStream,
+  selectSortStream,
+  selectYouTubeCard,
+} from 'src/app/redux/selectors/card.selector';
 import { SearchItemService } from 'src/app/services/search-item.service';
 
 @Component({
@@ -19,29 +17,28 @@ import { SearchItemService } from 'src/app/services/search-item.service';
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
-  items$!: Observable<Item[]>;
   sortEventStreamed?: SortEvent;
+  items$ = this.store.select(selectYouTubeCard);
+  searchStream$ = this.store.select(selectSearchStream);
+  sortStream$ = this.store.select(selectSortStream);
 
   constructor(
     private searchItemService: SearchItemService,
-    private headerSortService: HeaderSortService
+    private store: Store
   ) {}
   ngOnInit(): void {
-    this.headerSortService
-      .getSort()
+    this.sortStream$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => (this.sortEventStreamed = x));
-    this.headerSortService
-      .getInput()
+    this.searchStream$
       .pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
         filter(x => x.length > 2),
         switchMap(x => this.searchItemService.getSearchItems(x)),
+        switchMap(x => this.searchItemService.getVideoItems(x)),
         takeUntil(this.unsubscribe$)
       )
       .subscribe(x => {
-        this.items$ = this.searchItemService.getVideoItems(x);
+        this.store.dispatch(reloadCards({ items: x }));
       });
   }
 

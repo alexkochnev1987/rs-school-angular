@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export interface ThumbNail {
   url: string;
   width: number;
@@ -88,4 +90,20 @@ export interface SearchDetails {
 
 export interface SpinnerServiceState {
   [key: string]: boolean;
+}
+
+export interface CustomCard {
+  title: string | null;
+  description: string | null;
+  img: string | null;
+  link: string | null;
+  date: string | null;
+}
+
+export interface CardsStore {
+  customCards: CustomCard[];
+  youTubeCard: Item[];
+  loginStatus: boolean;
+  searchStream: string;
+  sortStream: SortEvent;
 }

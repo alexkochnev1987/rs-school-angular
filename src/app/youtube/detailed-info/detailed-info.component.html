@@ -1,13 +1,22 @@
 <div *ngIf="item$ | async as item">
   <div class="row">
     <div class="col-8 pl-5 align-self-center">
-      <button class="btn-primary btn pose" (click)="goBack()">Back</button>
+      <button
+        class="btn"
+        appColoringButton
+        [color]="getColor(this.item.snippet.publishedAt)"
+        (click)="goBack()">
+        Back
+      </button>
       <img
         class="w-100 h-75"
         [src]="getImageURL(item)"
         [alt]="item.snippet.title" />
     </div>
-    <div class="col-4">
+    <div
+      class="col-4 rounded"
+      appColoringBorder
+      [color]="getColor(this.item.snippet.publishedAt)">
       <div class="d-flex flex-column w-100 h-100">
         <div class="row">
           <h3 class="col-8 font-weight-bold h2">{{ item.snippet.title }}</h3>
