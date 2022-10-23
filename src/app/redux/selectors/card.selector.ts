@@ -29,3 +29,8 @@ export const selectSearchStream = createSelector(
   selectCard,
   (state: CardsStore) => state.searchStream
 );
+
+export const selectSpinnerState = createSelector(
+  selectCard,
+  (state: CardsStore) => state.spinnerState
+);

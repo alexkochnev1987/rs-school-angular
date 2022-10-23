@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import {
   BehaviorSubject,
   delay,
@@ -10,51 +11,29 @@ import {
 } from 'rxjs';
 import { SpinnerStateName } from '../constants';
 import { SpinnerServiceState } from '../interfaces';
-
-export class StoreService<T> {
-  private readonly state$: BehaviorSubject<T>;
-  protected get state(): T {
-    return this.state$.getValue();
-  }
-  constructor(initialState: T) {
-    this.state$ = new BehaviorSubject<T>(initialState);
-  }
-
-  protected getState() {
-    return this.state$;
-  }
-
-  protected setState(newState: Partial<T>) {
-    this.state$.next({
-      ...this.state,
-      ...newState,
-    });
-  }
-}
+import {
+  makeSpinnerStateFalse,
+  makeSpinnerStateTrue,
+} from '../redux/actions/cards.actions';
+import { selectSpinnerState } from '../redux/selectors/card.selector';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SpinnerService {
-  private isLoading$ = new BehaviorSubject<SpinnerServiceState>({
-    [SpinnerStateName.login]: false,
-  });
-  state$ = new BehaviorSubject(false);
-
-  loadingStatus: Observable<boolean> = this.state$.pipe(
-    switchMap(value => (value ? of(true).pipe(delay(500)) : of(true)))
-  );
+  spinnerState$ = this.store.select(selectSpinnerState);
+  constructor(private store: Store) {}
 
   requestStarted(value: SpinnerStateName) {
-    this.isLoading$.next({ ...this.isLoading$.value, [value]: true });
+    this.store.dispatch(makeSpinnerStateTrue({ name: value }));
   }
 
   requestEnded(value: SpinnerStateName) {
-    this.isLoading$.next({ ...this.isLoading$.value, [value]: false });
+    this.store.dispatch(makeSpinnerStateFalse({ name: value }));
   }
 
   getLoading(value: SpinnerStateName) {
-    return this.isLoading$.asObservable().pipe(
+    return this.spinnerState$.pipe(
       map(x => x[value]),
       switchMap(value => (!value ? of(false) : of(true).pipe(delay(500))))
     );

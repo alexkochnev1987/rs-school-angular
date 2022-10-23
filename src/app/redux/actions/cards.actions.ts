@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { SpinnerStateName } from 'src/app/constants';
 import { CustomCard, Item, SortEvent } from 'src/app/interfaces';
 
 export const addCard = createAction(
@@ -25,4 +26,14 @@ export const changeSearchStream = createAction(
 export const changeSortStream = createAction(
   '[Header Component] change search stream',
   props<{ input: SortEvent }>()
+);
+
+export const makeSpinnerStateFalse = createAction(
+  '[Spinner Service] spinner state false',
+  props<{ name: SpinnerStateName }>()
+);
+
+export const makeSpinnerStateTrue = createAction(
+  '[Spinner Service]  spinner state true',
+  props<{ name: SpinnerStateName }>()
 );

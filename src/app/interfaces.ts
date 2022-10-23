@@ -106,4 +106,5 @@ export interface CardsStore {
   loginStatus: boolean;
   searchStream: string;
   sortStream: SortEvent;
+  spinnerState: SpinnerServiceState;
 }
