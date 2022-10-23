@@ -10,7 +10,6 @@ export class CardEffect {
     () => {
       return this.actions$.pipe(
         ofType(addCard),
-        tap(() => console.log('AddCard')),
         catchError(() => EMPTY)
       );
     },
