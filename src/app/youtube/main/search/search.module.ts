@@ -6,9 +6,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../../../shared/shared.module';
 import { ColoringBorderDirective } from 'src/app/shared/directives/coloring-border.directive';
+import { CustomCardComponent } from './custom-card/custom-card.component';
 
 @NgModule({
-  declarations: [SearchResultsComponent, SearchItemComponent],
+  declarations: [
+    SearchResultsComponent,
+    SearchItemComponent,
+    CustomCardComponent,
+  ],
   imports: [MatCardModule, MatIconModule, SharedModule],
   exports: [SearchItemComponent, SearchResultsComponent],
 })

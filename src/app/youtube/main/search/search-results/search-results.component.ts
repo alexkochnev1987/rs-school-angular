@@ -4,6 +4,7 @@ import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { SortEvent } from 'src/app/interfaces';
 import { reloadCards } from 'src/app/redux/actions/cards.actions';
 import {
+  selectCustomCard,
   selectSearchStream,
   selectSortStream,
   selectYouTubeCard,
@@ -21,6 +22,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
   items$ = this.store.select(selectYouTubeCard);
   searchStream$ = this.store.select(selectSearchStream);
   sortStream$ = this.store.select(selectSortStream);
+  store$ = this.store.select(selectCustomCard);
 
   constructor(
     private searchItemService: SearchItemService,

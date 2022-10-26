@@ -48,17 +48,17 @@
       </form>
       <button
         (click)="show = !show"
-        class="d-flex align-items-center btn btn-primary p-1">
+        class="d-flex align-items-center btn btn-primary p-1 mx-2">
         <mat-icon>tune</mat-icon>
       </button>
     </div>
 
     <div class="navbar-text">
       <div
-        class="d-flex justify-content-between"
+        class="d-flex align-items-center"
         *ngIf="(loginStatus$ | async) === false">
-        <p>Login info</p>
-        <a [routerLink]="['/login']">
+        <p class="pr-2 m-0">Login info</p>
+        <a [routerLink]="['/login']" class="d-flex align-items-center">
           <svg
             width="24"
             height="24"

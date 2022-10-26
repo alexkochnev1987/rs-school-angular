@@ -50,10 +50,11 @@ export function getImageURL(item: Item) {
   return thumbnail.default.url;
 }
 
-export function getColor(date: string) {
+export function getColor(date: string | null) {
   const getAge = (date: string) =>
     Math.floor(Math.abs(Date.now() - new Date(date).getTime()) / MS_IN_DAY);
-  const age = getAge(date);
+  let age = 0;
+  if (date) age = getAge(date);
   if (age < AgeCategory.young) return Color.Blue;
   if (age < AgeCategory.middle) return Color.Green;
   if (age < AgeCategory.old) return Color.Yellow;

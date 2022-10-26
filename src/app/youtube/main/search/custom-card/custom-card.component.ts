@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { getColor } from 'src/app/constants';
 import { CustomCard } from 'src/app/interfaces';
 
 @Component({
@@ -8,5 +9,6 @@ import { CustomCard } from 'src/app/interfaces';
 })
 export class CustomCardComponent {
   @Input() customCard!: CustomCard;
+  getColor = getColor;
   constructor() {}
 }

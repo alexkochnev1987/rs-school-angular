@@ -8,7 +8,6 @@ import {
 import { Store } from '@ngrx/store';
 import { CustomCard } from 'src/app/interfaces';
 import { addCard } from 'src/app/redux/actions/cards.actions';
-import { selectCustomCard } from 'src/app/redux/selectors/card.selector';
 
 @Component({
   selector: 'app-admin',
@@ -27,7 +26,6 @@ export class AdminComponent {
     link: ['', [Validators.required, this.validateUrl]],
     date: ['', [Validators.required, this.validateDate]],
   });
-  store$ = this.store.select(selectCustomCard);
   constructor(private store: Store, private fb: FormBuilder) {}
 
   onSubmit() {

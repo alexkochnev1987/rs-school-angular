@@ -1,5 +1,8 @@
-<div class="d-flex flex-wrap justify-content-center">
+<div class="d-flex flex-wrap wrapper">
   <div *ngFor="let item of items$ | async | sortItem: sortEventStreamed">
     <app-search-item [item]="item"></app-search-item>
   </div>
+  <app-custom-card
+    *ngFor="let card of store$ | async"
+    [customCard]="card"></app-custom-card>
 </div>

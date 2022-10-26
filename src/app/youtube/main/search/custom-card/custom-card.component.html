@@ -1,4 +1,7 @@
-<mat-card class="example-card">
+<mat-card
+  class="example-card"
+  appColoringBorder
+  [color]="getColor(customCard.date)">
   <div class="d-flex flex-column justify-content-start h-100">
     <div class="h-50">
       <img

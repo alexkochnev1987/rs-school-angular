@@ -1,13 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchItemService {
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private router: Router) {}
 
   getSearchItems(searchInput: string): Observable<string[]> {
     return this.httpService.getData(searchInput).pipe(
@@ -18,7 +19,10 @@ export class SearchItemService {
 
   getVideoItems(id: string[]) {
     return this.httpService.getItemById(id.join(',')).pipe(
-      map(x => x.items),
+      map(x => {
+        if (x.items.length === 0) this.router.navigate(['**']);
+        return x.items;
+      }),
       catchError(this.handleError)
     );
   }

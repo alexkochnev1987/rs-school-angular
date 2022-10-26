@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   debounceTime,
@@ -7,6 +8,7 @@ import {
   map,
   Subject,
   takeUntil,
+  tap,
 } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import {
@@ -34,7 +36,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   SortKey = SortKey;
   loginStatus$ = this.store.select(selectLoginStatus);
   unsubscribe$ = new Subject();
-  constructor(private authService: AuthService, private store: Store) {}
+  constructor(
+    private authService: AuthService,
+    private store: Store,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.searchForm.valueChanges
@@ -42,6 +48,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         debounceTime(200),
         distinctUntilChanged(),
         map(x => (x.search ? x.search : '')),
+        tap(() =>
+          this.router.url !== '/main' ? this.router.navigate(['main']) : null
+        ),
         takeUntil(this.unsubscribe$)
       )
       .subscribe(x => {
