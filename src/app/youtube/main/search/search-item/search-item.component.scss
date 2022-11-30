@@ -1,0 +1,17 @@
+.example-card {
+  box-sizing: border-box;
+  width: 263px;
+  border-bottom: 10px solid;
+  height: 327px;
+  background: #E5E5E5;
+}
+
+.footer {
+  bottom: 0;
+}
+
+.cut-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}

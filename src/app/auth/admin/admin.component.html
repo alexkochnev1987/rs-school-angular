@@ -1,0 +1,104 @@
+<div class="d-flex align-items-center justify-content-center">
+  <form class="form" [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+    <h2>Create new card</h2>
+    <div class="form-group">
+      <label for="title" class="text-muted">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        formControlName="title" />
+      <div *ngIf="cardForm.get('title')?.dirty" class="error">
+        <p *ngIf="cardForm.get('title')?.errors?.['required']">
+          Please enter a title.
+        </p>
+        <p
+          *ngIf="cardForm.get('title')?.errors?.['minlength'] && !cardForm.get('title')?.errors?.['required']">
+          The title is too short.
+        </p>
+        <p *ngIf="cardForm.get('title')?.errors?.['maxlength']">
+          The title is too long.
+        </p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword" class="text-muted">Description</label>
+      <input
+        formControlName="description"
+        type="text"
+        class="form-control"
+        id="description" />
+      <div *ngIf="cardForm.get('title')?.dirty" class="error">
+        <p *ngIf="cardForm.get('description')?.errors?.['maxlength']">
+          The description is too long.
+        </p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="image" class="text-muted">Img</label>
+      <input
+        formControlName="img"
+        type="text"
+        class="form-control"
+        id="image" />
+      <div *ngIf="cardForm.get('img')?.dirty" class="error">
+        <p *ngIf="cardForm.get('img')?.errors?.['required']">
+          Please enter a link to the image.
+        </p>
+        <p
+          *ngIf="cardForm.get('img')?.errors?.['url'] && !cardForm.get('img')?.errors?.['required']">
+          The image link is invalid.
+        </p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="link" class="text-muted">Link video</label>
+      <input
+        formControlName="link"
+        type="text"
+        class="form-control"
+        id="link" />
+      <div *ngIf="cardForm.get('link')?.dirty" class="error">
+        <p *ngIf="cardForm.get('link')?.errors?.['required']">
+          Please enter a link to the video.
+        </p>
+        <p
+          *ngIf="cardForm.get('link')?.errors?.['url'] && !cardForm.get('link')?.errors?.['required']">
+          The video link is invalid.
+        </p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="date" class="text-muted">Creation date</label>
+      <input
+        formControlName="date"
+        type="date"
+        class="form-control"
+        id="date" />
+      <div *ngIf="cardForm.get('date')?.dirty" class="error">
+        <p *ngIf="cardForm.get('date')?.errors?.['required']">
+          Please enter a creation date.
+        </p>
+        <p
+          *ngIf="cardForm.get('date')?.errors?.['date'] && !cardForm.get('date')?.errors?.['required']">
+          The date is invalid.
+        </p>
+      </div>
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="cardForm.invalid">
+        <div class="d-flex">
+          <mat-spinner
+            class="m-0 p-0"
+            diameter="20"
+            color="primary"
+            *ngIf="isLoading"></mat-spinner>
+          <p class="m-0 p-0 pl-2">Create card</p>
+        </div>
+      </button>
+    </div>
+  </form>
+</div>

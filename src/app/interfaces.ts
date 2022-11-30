@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export interface ThumbNail {
   url: string;
   width: number;
@@ -35,7 +37,7 @@ export interface Snippet {
     description: string;
   };
   defaultAudioLanguage: string;
-  statistics: Statistics;
+  defaultLanguage?: string;
 }
 
 export interface Item {
@@ -43,6 +45,15 @@ export interface Item {
   etag: string;
   id: string;
   snippet: Snippet;
+  statistics: Statistics;
+}
+
+export interface SearchItem {
+  kind: string;
+  etag: string;
+  id: { kind: string; videoId: string };
+  snippet: Snippet;
+  statistics: Statistics;
 }
 
 export interface YoutubeResponse {
@@ -53,4 +64,47 @@ export interface YoutubeResponse {
     resultsPerPage: number;
   };
   items: Item[];
+}
+
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
+}
+
+export enum SortKey {
+  date = 'date',
+  view = 'view',
+}
+
+export interface SortEvent {
+  order: SortOrder;
+  key?: SortKey | null;
+}
+
+export interface SearchDetails {
+  etag: string;
+  items: SearchItem[];
+  kind: string;
+  pageInfo: { totalResults: number; resultsPerPage: number };
+}
+
+export interface SpinnerServiceState {
+  [key: string]: boolean;
+}
+
+export interface CustomCard {
+  title: string | null;
+  description: string | null;
+  img: string | null;
+  link: string | null;
+  date: string | null;
+}
+
+export interface CardsStore {
+  customCards: CustomCard[];
+  youTubeCard: Item[];
+  loginStatus: boolean;
+  searchStream: string;
+  sortStream: SortEvent;
+  spinnerState: SpinnerServiceState;
 }
